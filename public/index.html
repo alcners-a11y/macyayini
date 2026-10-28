@@ -3,826 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canlı Maç Yayınları TV</title>
+    <title>Canlı Maç TV - Bağlanıyor...</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-main: #0a0d14;
-            --bg-card: #121722;
-            --bg-card-hover: #192030;
-            --bg-sidebar: #0e121a;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --border-active: #ff2a44;
-            --primary-red: #ff2a44;
-            --primary-red-glow: rgba(255, 42, 68, 0.35);
-            --text-main: #ffffff;
-            --text-muted: #8e9bb0;
-            --text-dim: #5c667a;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
         }
 
         body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* Top Navbar */
-        .navbar {
-            background: rgba(14, 18, 26, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            flex-shrink: 0;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--text-main);
-        }
-
-        .brand-logo {
-            background: linear-gradient(135deg, #ff2a44, #ff5e62);
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            background-color: #0a0d14;
+            color: #ffffff;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px var(--primary-red-glow);
-            font-size: 20px;
-        }
-
-        .brand-title {
-            font-size: 19px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-
-        .brand-title span {
-            color: var(--primary-red);
-        }
-
-        .nav-stats {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .live-badge {
-            background: rgba(255, 42, 68, 0.15);
-            color: var(--primary-red);
-            border: 1px solid rgba(255, 42, 68, 0.3);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--primary-red);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--primary-red);
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 42, 68, 0.7); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(255, 42, 68, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 42, 68, 0); }
-        }
-
-        /* Main Workspace Layout */
-        .main-container {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            height: calc(100vh - 61px);
-            overflow: hidden;
-        }
-
-        /* Left: Player Stage */
-        .player-section {
-            display: flex;
-            flex-direction: column;
-            padding: 20px 24px;
-            gap: 16px;
-            overflow-y: auto;
-            background: radial-gradient(circle at 20% 20%, rgba(255, 42, 68, 0.05), transparent 45%);
-        }
-
-        /* Match Banner Header */
-        .match-banner {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 16px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            flex-shrink: 0;
-        }
-
-        .banner-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .banner-badges {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .badge-live {
-            background: var(--primary-red);
-            color: white;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-time {
-            background: rgba(255, 255, 255, 0.07);
-            color: #ffcc00;
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 6px;
-        }
-
-        .badge-league {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 12px;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 6px;
-        }
-
-        .banner-teams {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            gap: 16px;
-            padding: 4px 0;
-        }
-
-        .team-box {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .team-box.away {
-            justify-content: flex-end;
-            text-align: right;
-        }
-
-        .team-logo-wrap {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .team-logo-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .team-logo-fallback {
-            font-weight: 800;
-            font-size: 14px;
-            color: #fff;
-            text-transform: uppercase;
-        }
-
-        .team-name-lg {
-            font-size: 18px;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1.2;
-        }
-
-        .vs-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 0 16px;
-        }
-
-        .vs-text {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 6px;
-            letter-spacing: 1px;
-        }
-
-        .live-score-lg {
-            font-size: 26px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 2px;
-        }
-
-        /* Large Video Player Frame */
-        .player-wrapper {
-            position: relative;
-            background: #000;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7);
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            min-height: 420px;
-        }
-
-        .player-aspect-box {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            flex: 1;
-            background: #000;
-        }
-
-        .player-iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .empty-player-state {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            color: var(--text-muted);
-            text-align: center;
             padding: 20px;
-            background: radial-gradient(circle at center, #182030, #0a0d14);
+            background: radial-gradient(circle at center, #151b28, #0a0d14);
         }
 
-        .empty-player-state h3 {
-            color: #fff;
-            font-size: 19px;
-            font-weight: 700;
-        }
-
-        /* Right Sidebar: Broadcasts List */
-        .sidebar {
-            background: var(--bg-sidebar);
-            border-left: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .sidebar-header {
-            padding: 18px 20px 14px 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-
-        .sidebar-title-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar-title {
-            font-size: 16px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: -0.3px;
-        }
-
-        .match-count-pill {
-            background: var(--primary-red);
-            color: white;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 9px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px var(--primary-red-glow);
-        }
-
-        .search-box {
-            position: relative;
-        }
-
-        .search-box input {
+        .portal-card {
+            background: #121722;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 440px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 9px 12px 9px 36px;
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        .search-box input:focus {
-            border-color: var(--primary-red);
-            background: rgba(255, 255, 255, 0.09);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-dim);
-            font-size: 14px;
-        }
-
-        /* Match Cards */
-        .matches-list {
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 12px 16px;
+            text-align: center;
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6);
             display: flex;
             flex-direction: column;
-            gap: 10px;
-        }
-
-        .match-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            position: relative;
-            flex-shrink: 0;
-            min-height: 110px;
-        }
-
-        .match-card:hover {
-            background: var(--bg-card-hover);
-            transform: translateY(-1px);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .match-card.active {
-            background: #171d2c;
-            border-color: var(--primary-red);
-            box-shadow: 0 4px 18px rgba(255, 42, 68, 0.2);
-        }
-
-        .match-card.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--primary-red);
-        }
-
-        .card-top {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 16px;
         }
 
-        .card-time-badge {
-            font-size: 11px;
-            font-weight: 700;
-            color: #ff2a44;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .card-league {
-            font-size: 11px;
-            color: var(--text-dim);
-            font-weight: 600;
-            max-width: 170px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .card-body {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-teams {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            flex: 1;
-        }
-
-        .card-team-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card-team-logo {
-            width: 20px;
-            height: 20px;
-            border-radius: 5px;
-            object-fit: contain;
-            background: rgba(255, 255, 255, 0.05);
-            flex-shrink: 0;
-        }
-
-        .card-team-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #fff;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 180px;
-        }
-
-        .card-score {
-            font-size: 16px;
-            font-weight: 800;
-            color: #fff;
-            padding: 0 6px;
-        }
-
-        .card-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            padding-top: 6px;
-        }
-
-        .tag-broadcast {
-            background: rgba(255, 42, 68, 0.15);
-            color: #ff4d64;
-            border: 1px solid rgba(255, 42, 68, 0.3);
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .card-play-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
+        .logo-badge {
+            background: linear-gradient(135deg, #ff2a44, #ff5e62);
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
-            color: #fff;
-            transition: all 0.2s;
+            font-size: 28px;
+            box-shadow: 0 6px 20px rgba(255, 42, 68, 0.4);
         }
 
-        .match-card:hover .card-play-icon,
-        .match-card.active .card-play-icon {
-            background: var(--primary-red);
-            transform: scale(1.1);
+        h2 {
+            font-size: 22px;
+            font-weight: 800;
         }
 
-        /* Scrollbars */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.25);
+        h2 span {
+            color: #ff2a44;
         }
 
-        @media (max-width: 900px) {
-            .main-container {
-                grid-template-columns: 1fr;
-                height: auto;
-                overflow: visible;
-            }
-            .sidebar {
-                height: 500px;
-            }
+        p {
+            color: #8e9bb0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(255, 42, 68, 0.2);
+            border-top: 3px solid #ff2a44;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-top: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .offline-box {
+            display: none;
+            background: rgba(255, 42, 68, 0.08);
+            border: 1px solid rgba(255, 42, 68, 0.2);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #ff7385;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header class="navbar">
-        <a href="/" class="brand">
-            <div class="brand-logo">⚽</div>
-            <div class="brand-title">CANLI<span>TV</span></div>
-        </a>
-        <div class="nav-stats">
-            <div class="live-badge">
-                <div class="pulse-dot"></div>
-                <span id="headerLiveCount">0 Canlı Yayın</span>
-            </div>
+    <div class="portal-card">
+        <div class="logo-badge">⚽</div>
+        <h2>CANLI<span>TV</span></h2>
+        <p id="statusText">Canlı maç yayınına bağlanılıyor...</p>
+        <div class="spinner" id="spinner"></div>
+
+        <div class="offline-box" id="offlineBox">
+            ⚠️ <strong>Yayın sunucusu kapalı</strong><br>
+            Bilgisayarınızdaki <code>baslat.bat</code> dosyasını açtığınızda maç yayını otomatik olarak başlayacaktır.
         </div>
-    </header>
-
-    <!-- Main Container -->
-    <div class="main-container">
-
-        <!-- Left: Match Banner & Video Player -->
-        <main class="player-section">
-
-            <!-- Banner Header -->
-            <div class="match-banner" id="matchBanner">
-                <div class="banner-top">
-                    <div class="banner-badges">
-                        <span class="badge-live">🔴 CANLI YAYIN</span>
-                        <span class="badge-time" id="bannerMinute">--:--</span>
-                    </div>
-                    <span class="badge-league" id="bannerLeague">Lig Yükleniyor...</span>
-                </div>
-
-                <div class="banner-teams">
-                    <div class="team-box home">
-                        <div class="team-logo-wrap" id="homeLogoWrap">
-                            <span class="team-logo-fallback" id="homeFallback">EV</span>
-                        </div>
-                        <span class="team-name-lg" id="homeName">Ev Sahibi</span>
-                    </div>
-
-                    <div class="vs-box">
-                        <span class="vs-text">VS</span>
-                        <span class="live-score-lg" id="bannerScore">0 - 0</span>
-                    </div>
-
-                    <div class="team-box away">
-                        <span class="team-name-lg" id="awayName">Deplasman</span>
-                        <div class="team-logo-wrap" id="awayLogoWrap">
-                            <span class="team-logo-fallback" id="awayFallback">DEP</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Video Player -->
-            <div class="player-wrapper">
-                <div class="player-aspect-box">
-                    <iframe id="streamIframe" class="player-iframe" src="" allow="autoplay *; fullscreen *; encrypted-media *" allowfullscreen></iframe>
-                    <div class="empty-player-state" id="emptyState" style="display: none;">
-                        <div style="font-size: 48px;">📺</div>
-                        <h3>İzlemek istediğiniz maçı seçin</h3>
-                        <p style="font-size: 13px;">Sağ taraftaki listeden canlı yayını olan bir maça tıklayın.</p>
-                    </div>
-                </div>
-            </div>
-
-        </main>
-
-        <!-- Right: Streamable Matches List -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-title-row">
-                    <div class="sidebar-title">
-                        <span>🔴 CANLI YAYINLAR</span>
-                        <span class="match-count-pill" id="sidebarCountPill">0</span>
-                    </div>
-                </div>
-
-                <div class="search-box">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="searchInput" placeholder="Takım veya lig ara..." oninput="handleSearch(this.value)">
-                </div>
-            </div>
-
-            <div class="matches-list" id="matchesList">
-                <div style="padding: 24px; text-align: center; color: var(--text-dim); font-size: 13px;">
-                    Canlı yayınlar aranıyor...
-                </div>
-            </div>
-        </aside>
-
     </div>
 
     <script>
-        // Backend API adresi: Render'da ve yerelde aynı sunucu (''), Firebase'den açıldığında Render adresi
-        const API_BASE = (window.location.hostname.includes('web.app') || window.location.hostname.includes('firebaseapp.com'))
-            ? 'https://macyayini.onrender.com'
-            : '';
+        const BRIDGE_URL = "https://ntfy.sh/macyayini_bridge_a0419/raw?poll=1";
 
-        let streamableMatches = [];
-        let searchQuery = '';
-        let activeMatchId = null;
-
-        async function fetchLiveStreams() {
+        async function checkAndRedirect() {
             try {
-                const res = await fetch(`${API_BASE}/api/matches`);
-                const data = await res.json();
-                if (data.status === 'success') {
-                    streamableMatches = data.matches;
-
-                    document.getElementById('headerLiveCount').innerText = `${data.total} Canlı Yayın`;
-                    document.getElementById('sidebarCountPill').innerText = data.total;
-
-                    // Henüz maç seçilmediyse ilk canlı yayını otomatik başlat
-                    if (!activeMatchId && streamableMatches.length > 0) {
-                        selectMatch(streamableMatches[0].id);
-                    } else if (activeMatchId) {
-                        const current = streamableMatches.find(m => m.id === activeMatchId);
-                        if (current) {
-                            updateBannerInfo(current);
-                        }
+                const res = await fetch(BRIDGE_URL);
+                const text = await res.text();
+                const lines = text.trim().split('\n').filter(Boolean);
+                
+                if (lines.length > 0) {
+                    const latestUrl = lines[lines.length - 1];
+                    if (latestUrl.startsWith("http")) {
+                        document.getElementById('statusText').innerText = "Yayın hazır, açılıyor...";
+                        window.location.replace(latestUrl);
+                        return;
                     }
-
-                    renderMatchList();
                 }
             } catch (err) {
-                console.error("Yayın çekme hatası:", err);
-            }
-        }
-
-        function renderMatchList() {
-            const listEl = document.getElementById('matchesList');
-            let filtered = streamableMatches.filter(m => {
-                if (!searchQuery) return true;
-                const q = searchQuery.toLowerCase();
-                return m.home.toLowerCase().includes(q) ||
-                       m.away.toLowerCase().includes(q) ||
-                       m.tournament.toLowerCase().includes(q);
-            });
-
-            if (filtered.length === 0) {
-                listEl.innerHTML = `<div style="padding: 30px; text-align: center; color: var(--text-dim); font-size: 13px;">Canlı yayınlı maç bulunamadı.</div>`;
-                return;
+                console.log("Bağlantı bekleniyor...");
             }
 
-            listEl.innerHTML = filtered.map(m => {
-                const isActive = m.id === activeMatchId;
-
-                const homeLogoHtml = m.home_logo 
-                    ? `<img src="${m.home_logo}" class="card-team-logo" onerror="this.style.display='none'">`
-                    : `<div class="card-team-logo" style="display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">${m.home.slice(0,2).toUpperCase()}</div>`;
-                    
-                const awayLogoHtml = m.away_logo 
-                    ? `<img src="${m.away_logo}" class="card-team-logo" onerror="this.style.display='none'">`
-                    : `<div class="card-team-logo" style="display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">${m.away.slice(0,2).toUpperCase()}</div>`;
-
-                const timeText = m.minute ? m.minute : (m.status || 'Canlı');
-
-                return `
-                    <div class="match-card ${isActive ? 'active' : ''}" onclick="selectMatch(${m.id})">
-                        <div class="card-top">
-                            <span class="card-time-badge">🔴 ${timeText}</span>
-                            <span class="card-league" title="${m.tournament}">${m.tournament}</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="card-teams">
-                                <div class="card-team-row">
-                                    ${homeLogoHtml}
-                                    <span class="card-team-name">${m.home}</span>
-                                </div>
-                                <div class="card-team-row">
-                                    ${awayLogoHtml}
-                                    <span class="card-team-name">${m.away}</span>
-                                </div>
-                            </div>
-                            <div class="card-score">${m.score}</div>
-                        </div>
-                        <div class="card-bottom">
-                            <span class="tag-broadcast">📺 YAYINDA</span>
-                            <div class="card-play-icon">▶</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            // Eğer tünel henüz açılmadıysa bekleme uyarısını göster
+            setTimeout(() => {
+                document.getElementById('offlineBox').style.display = 'block';
+                document.getElementById('statusText').innerText = "Bilgisayarınızdaki tünel bekleniyor...";
+            }, 2500);
         }
 
-        function selectMatch(mid) {
-            activeMatchId = mid;
-            const match = streamableMatches.find(m => m.id === mid);
-            if (!match) return;
-
-            updateBannerInfo(match);
-            loadVideoStream(match);
-            renderMatchList();
-        }
-
-        function updateBannerInfo(match) {
-            document.getElementById('homeName').innerText = match.home;
-            document.getElementById('awayName').innerText = match.away;
-            document.getElementById('bannerScore').innerText = match.score;
-            document.getElementById('bannerMinute').innerText = match.minute || match.status || 'Canlı';
-            document.getElementById('bannerLeague').innerText = match.tournament;
-
-            const homeWrap = document.getElementById('homeLogoWrap');
-            const awayWrap = document.getElementById('awayLogoWrap');
-            if (match.home_logo) {
-                homeWrap.innerHTML = `<img src="${match.home_logo}" onerror="this.parentElement.innerHTML='<span class=\\'team-logo-fallback\\'>${match.home.slice(0,2).toUpperCase()}</span>'">`;
-            } else {
-                homeWrap.innerHTML = `<span class="team-logo-fallback">${match.home.slice(0,2).toUpperCase()}</span>`;
-            }
-
-            if (match.away_logo) {
-                awayWrap.innerHTML = `<img src="${match.away_logo}" onerror="this.parentElement.innerHTML='<span class=\\'team-logo-fallback\\'>${match.away.slice(0,2).toUpperCase()}</span>'">`;
-            } else {
-                awayWrap.innerHTML = `<span class="team-logo-fallback">${match.away.slice(0,2).toUpperCase()}</span>`;
-            }
-        }
-
-        function loadVideoStream(match) {
-            const iframe = document.getElementById('streamIframe');
-            const emptyState = document.getElementById('emptyState');
-
-            if (match.broadcast && match.broadcast.url) {
-                emptyState.style.display = 'none';
-                iframe.style.display = 'block';
-                const proxyUrl = `${API_BASE}/player/stream?url=${encodeURIComponent(match.broadcast.url)}`;
-                if (iframe.src !== proxyUrl) {
-                    iframe.src = proxyUrl;
-                }
-            } else {
-                iframe.style.display = 'none';
-                emptyState.style.display = 'flex';
-            }
-        }
-
-        function handleSearch(val) {
-            searchQuery = val.trim();
-            renderMatchList();
-        }
-
-        fetchLiveStreams();
-        setInterval(fetchLiveStreams, 3500);
+        checkAndRedirect();
+        // 3 saniyede bir otomatik dene
+        setInterval(checkAndRedirect, 3000);
     </script>
 </body>
 </html>
