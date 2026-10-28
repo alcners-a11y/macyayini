@@ -313,7 +313,7 @@ def player_stream():
             
             unmute_script = """
             <script>
-            function unmuteStream() {
+            function forceUnmute() {
                 var v = document.getElementById('video');
                 if (v) {
                     v.muted = false;
@@ -323,7 +323,6 @@ def player_stream():
                         var p = v.play();
                         if (p !== undefined) {
                             p.catch(function() {
-                                // Tarayıcı henüz ilk tıklamayı almadıysa sessiz başlatıp ilk tıkta sesi aç
                                 v.muted = true;
                                 v.play();
                             });
@@ -331,18 +330,14 @@ def player_stream():
                     }
                 }
             }
-            document.addEventListener('DOMContentLoaded', unmuteStream);
-            window.addEventListener('load', unmuteStream);
-            var unmuteInterval = setInterval(function() {
-                var v = document.getElementById('video');
-                if (v && !v.muted) {
-                    clearInterval(unmuteInterval);
-                } else {
-                    unmuteStream();
-                }
-            }, 300);
-            window.addEventListener('click', unmuteStream);
-            window.addEventListener('touchstart', unmuteStream);
+            window.addEventListener('message', function(e) {
+                if (e.data === 'unmute') { forceUnmute(); }
+            });
+            document.addEventListener('DOMContentLoaded', forceUnmute);
+            window.addEventListener('load', forceUnmute);
+            document.addEventListener('click', forceUnmute);
+            document.addEventListener('touchstart', forceUnmute, { passive: true });
+            document.addEventListener('touchend', forceUnmute, { passive: true });
             </script>
             """
             

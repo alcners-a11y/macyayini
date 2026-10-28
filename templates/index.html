@@ -569,7 +569,35 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
+        .unmute-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: #ff2a44;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 7px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(255, 42, 68, 0.6);
+            animation: pulse-unmute 2s infinite;
+        }
+
+        @keyframes pulse-unmute {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 42, 68, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(255, 42, 68, 0); }
+        }
+
         @media (max-width: 900px) {
+            .navbar {
+                display: none;
+            }
             body {
                 height: auto;
                 min-height: 100vh;
@@ -583,23 +611,32 @@
                 overflow: visible;
             }
             .player-section {
-                padding: 10px 12px;
-                gap: 10px;
+                padding: 0;
+                gap: 0;
                 overflow: visible;
                 height: auto;
                 display: flex;
                 flex-direction: column;
             }
-            /* Mobilde oynatıcı en üstte, maç skoru hemen altında */
+            /* Mobilde oynatıcı en üstte ve ekran kaydırıldığında sabit (sticky) kalır */
             .player-wrapper {
                 order: 1;
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+                width: 100%;
                 min-height: unset;
                 height: auto;
                 aspect-ratio: 16 / 9;
-                border-radius: 12px;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-top: none;
+                box-shadow: 0 4px 25px rgba(0, 0, 0, 0.95);
             }
             .match-banner {
                 order: 2;
+                margin: 8px 10px;
                 padding: 10px 14px;
                 border-radius: 12px;
                 gap: 8px;
@@ -694,6 +731,7 @@
 
             <!-- Video Player -->
             <div class="player-wrapper">
+                <button id="btnUnmuteBtn" class="unmute-badge" onclick="triggerUnmute()">🔊 Sesi Aç</button>
                 <div class="player-aspect-box">
                     <iframe id="streamIframe" class="player-iframe" src="" allow="autoplay *; fullscreen *; encrypted-media *" allowfullscreen playsinline webkit-playsinline></iframe>
                     <div class="empty-player-state" id="emptyState" style="display: none;">
@@ -822,6 +860,15 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        function triggerUnmute() {
+            const iframe = document.getElementById('streamIframe');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage('unmute', '*');
+            }
+            const btn = document.getElementById('btnUnmuteBtn');
+            if (btn) btn.style.display = 'none';
         }
 
         function selectMatch(mid) {
