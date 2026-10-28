@@ -301,9 +301,11 @@ def player_stream():
         )
         if res.status_code == 200:
             content = res.text
-            # 1. Video etiketinden 'muted' niteliğini kaldır
+            # 1. Video etiketinden 'muted' niteliğini kaldır ve mobilde tam ekranı zorlamaması için playsinline ekle
             content = re.sub(r'\bcontrols\s+muted\b', 'controls', content)
             content = re.sub(r'\bmuted\b', '', content)
+            if "<video" in content:
+                content = content.replace("<video", '<video playsinline="true" webkit-playsinline="true" x5-playsinline="true" ')
             
             # 2. Base tag ve sesi zorla açan betiği ekle
             parsed = urllib.parse.urlparse(decoded_url)

@@ -570,13 +570,70 @@
         }
 
         @media (max-width: 900px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
             .main-container {
-                grid-template-columns: 1fr;
+                display: flex;
+                flex-direction: column;
                 height: auto;
                 overflow: visible;
             }
+            .player-section {
+                padding: 10px 12px;
+                gap: 10px;
+                overflow: visible;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+            }
+            /* Mobilde oynatıcı en üstte, maç skoru hemen altında */
+            .player-wrapper {
+                order: 1;
+                min-height: unset;
+                height: auto;
+                aspect-ratio: 16 / 9;
+                border-radius: 12px;
+            }
+            .match-banner {
+                order: 2;
+                padding: 10px 14px;
+                border-radius: 12px;
+                gap: 8px;
+            }
+            .banner-teams {
+                gap: 8px;
+            }
+            .team-name-lg {
+                font-size: 13px;
+                max-width: 110px;
+            }
+            .live-score-lg {
+                font-size: 18px;
+            }
+            .team-logo-wrap {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+            }
             .sidebar {
-                height: 500px;
+                order: 3;
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+                height: auto;
+                overflow: visible;
+            }
+            .sidebar-header {
+                padding: 14px 16px 10px 16px;
+            }
+            .matches-list {
+                height: auto;
+                max-height: none;
+                overflow: visible;
+                padding: 10px 14px 40px 14px;
             }
         }
     </style>
@@ -638,7 +695,7 @@
             <!-- Video Player -->
             <div class="player-wrapper">
                 <div class="player-aspect-box">
-                    <iframe id="streamIframe" class="player-iframe" src="" allow="autoplay *; fullscreen *; encrypted-media *" allowfullscreen></iframe>
+                    <iframe id="streamIframe" class="player-iframe" src="" allow="autoplay *; fullscreen *; encrypted-media *" allowfullscreen playsinline webkit-playsinline></iframe>
                     <div class="empty-player-state" id="emptyState" style="display: none;">
                         <div style="font-size: 48px;">📺</div>
                         <h3>İzlemek istediğiniz maçı seçin</h3>
@@ -775,6 +832,11 @@
             updateBannerInfo(match);
             loadVideoStream(match);
             renderMatchList();
+
+            // Mobilde listeden maça dokunulduğunda yukarıdaki oynatıcıya kaydır
+            if (window.innerWidth <= 900) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
 
         function updateBannerInfo(match) {
