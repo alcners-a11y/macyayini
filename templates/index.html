@@ -569,108 +569,137 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
-        .unmute-badge {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            background: #ff2a44;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 7px 14px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 15px rgba(255, 42, 68, 0.6);
-            animation: pulse-unmute 2s infinite;
-        }
-
-        @keyframes pulse-unmute {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 42, 68, 0.7); }
-            50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(255, 42, 68, 0); }
-        }
-
         @media (max-width: 900px) {
-            .navbar {
-                display: none;
+            html, body {
+                width: 100%;
+                height: 100%;
+                height: 100dvh;
+                overflow: hidden !important;
+                position: fixed !important;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: 0;
+                padding: 0;
+                touch-action: pan-y;
             }
-            body {
-                height: auto;
-                min-height: 100vh;
-                overflow-y: auto;
-                overflow-x: hidden;
+            .navbar {
+                display: none !important;
             }
             .main-container {
-                display: flex;
-                flex-direction: column;
-                height: auto;
-                overflow: visible;
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100vw !important;
+                height: 100% !important;
+                height: 100dvh !important;
+                overflow: hidden !important;
+                position: relative !important;
             }
+
+            /* 1. ÜST SABİT BÖLÜM: Oynatıcı & Maç Bilgileri (Aşağı inseniz bile ASLA hareket etmez) */
             .player-section {
-                padding: 0;
-                gap: 0;
-                overflow: visible;
-                height: auto;
-                display: flex;
-                flex-direction: column;
+                flex: 0 0 auto !important;
+                padding: 0 !important;
+                gap: 0 !important;
+                overflow: hidden !important;
+                display: flex !important;
+                flex-direction: column !important;
+                background: #000 !important;
+                z-index: 20 !important;
             }
-            /* Mobilde oynatıcı en üstte ve ekran kaydırıldığında sabit (sticky) kalır */
             .player-wrapper {
-                order: 1;
-                position: sticky;
-                top: 0;
-                z-index: 1000;
-                width: 100%;
-                min-height: unset;
-                height: auto;
-                aspect-ratio: 16 / 9;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-                border-top: none;
-                box-shadow: 0 4px 25px rgba(0, 0, 0, 0.95);
+                order: 1 !important;
+                width: 100% !important;
+                aspect-ratio: 16 / 9 !important;
+                height: auto !important;
+                min-height: unset !important;
+                max-height: 35vh !important;
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8) !important;
+                flex-shrink: 0 !important;
             }
             .match-banner {
-                order: 2;
-                margin: 8px 10px;
-                padding: 10px 14px;
-                border-radius: 12px;
-                gap: 8px;
+                order: 2 !important;
+                margin: 0 !important;
+                padding: 6px 12px !important;
+                border: none !important;
+                border-bottom: 1px solid var(--border-color) !important;
+                border-radius: 0 !important;
+                background: #11151f !important;
+                flex-shrink: 0 !important;
+                gap: 4px !important;
+            }
+            .banner-top {
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
             }
             .banner-teams {
-                gap: 8px;
+                gap: 6px !important;
+                padding: 0 !important;
             }
             .team-name-lg {
-                font-size: 13px;
-                max-width: 110px;
+                font-size: 13px !important;
+                max-width: 120px !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
             }
             .live-score-lg {
-                font-size: 18px;
+                font-size: 16px !important;
             }
             .team-logo-wrap {
-                width: 32px;
-                height: 32px;
-                border-radius: 8px;
+                width: 26px !important;
+                height: 26px !important;
+                border-radius: 6px !important;
             }
+
+            /* 2. SABİT ARAMA VE KAYDIRILABİLİR MAÇ LİSTESİ */
             .sidebar {
-                order: 3;
-                border-left: none;
-                border-top: 1px solid var(--border-color);
-                height: auto;
-                overflow: visible;
+                flex: 1 1 0% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                min-height: 0 !important;
+                overflow: hidden !important;
+                border: none !important;
+                background: var(--bg-sidebar) !important;
             }
+            /* Arama kutusu ve Canlı Yayınlar başlığı SABİT */
             .sidebar-header {
-                padding: 14px 16px 10px 16px;
+                flex: 0 0 auto !important;
+                padding: 8px 12px !important;
+                border-bottom: 1px solid var(--border-color) !important;
+                background: #0e121a !important;
+                z-index: 10 !important;
             }
+            .sidebar-title {
+                font-size: 13px !important;
+            }
+            .search-box input {
+                padding: 7px 10px 7px 32px !important;
+                font-size: 12px !important;
+            }
+            .search-icon {
+                left: 10px !important;
+                font-size: 12px !important;
+            }
+
+            /* 3. SADECE MAÇ LİSTESİ AŞAĞI YUKARI KAYAR */
             .matches-list {
-                height: auto;
-                max-height: none;
-                overflow: visible;
-                padding: 10px 14px 40px 14px;
+                flex: 1 1 0% !important;
+                min-height: 0 !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                -webkit-overflow-scrolling: touch !important;
+                overscroll-behavior-y: contain !important;
+                padding: 8px 10px 30px 10px !important;
+                gap: 8px !important;
+            }
+            .match-card {
+                min-height: 90px !important;
+                padding: 10px 12px !important;
             }
         }
     </style>
@@ -731,7 +760,6 @@
 
             <!-- Video Player -->
             <div class="player-wrapper">
-                <button id="btnUnmuteBtn" class="unmute-badge" onclick="triggerUnmute()">🔊 Sesi Aç</button>
                 <div class="player-aspect-box">
                     <iframe id="streamIframe" class="player-iframe" src="" allow="autoplay *; fullscreen *; encrypted-media *" allowfullscreen playsinline webkit-playsinline></iframe>
                     <div class="empty-player-state" id="emptyState" style="display: none;">
@@ -770,14 +798,23 @@
     </div>
 
     <script>
-        // Backend API adresi: Render'da ve yerelde aynı sunucu (''), Firebase'den açıldığında Render adresi
-        const API_BASE = (window.location.hostname.includes('web.app') || window.location.hostname.includes('firebaseapp.com'))
-            ? 'https://macyayini.onrender.com'
-            : '';
+        // API Base: Yerel veya Cloudflare tünel üzerinden her zaman aynı hostu kullanır
+        const API_BASE = '';
 
         let streamableMatches = [];
         let searchQuery = '';
         let activeMatchId = null;
+
+        // Otomatik ses açma: Kullanıcı ekrana herhangi bir yere (maç seçimi, kaydırma vb.) dokunduğu anda iframe'e ses aç emri gider
+        function autoUnmuteStream() {
+            const iframe = document.getElementById('streamIframe');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage('unmute', '*');
+            }
+        }
+        ['pointerdown', 'touchstart', 'click'].forEach(evt => {
+            document.addEventListener(evt, autoUnmuteStream, { passive: true });
+        });
 
         async function fetchLiveStreams() {
             try {
@@ -862,15 +899,6 @@
             }).join('');
         }
 
-        function triggerUnmute() {
-            const iframe = document.getElementById('streamIframe');
-            if (iframe && iframe.contentWindow) {
-                iframe.contentWindow.postMessage('unmute', '*');
-            }
-            const btn = document.getElementById('btnUnmuteBtn');
-            if (btn) btn.style.display = 'none';
-        }
-
         function selectMatch(mid) {
             activeMatchId = mid;
             const match = streamableMatches.find(m => m.id === mid);
@@ -879,11 +907,7 @@
             updateBannerInfo(match);
             loadVideoStream(match);
             renderMatchList();
-
-            // Mobilde listeden maça dokunulduğunda yukarıdaki oynatıcıya kaydır
-            if (window.innerWidth <= 900) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            autoUnmuteStream();
         }
 
         function updateBannerInfo(match) {
