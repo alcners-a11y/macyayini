@@ -675,10 +675,10 @@
     </div>
 
     <script>
-        // Backend API adresi: Yereldeyken otomatik yerel sunucu, Firebase'deyken canlı backend adresi
-        const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-            ? ''
-            : (localStorage.getItem('BACKEND_URL') || 'https://macyayini-api.onrender.com');
+        // Backend API adresi: Render'da ve yerelde aynı sunucu (''), Firebase'den açıldığında Render adresi
+        const API_BASE = (window.location.hostname.includes('web.app') || window.location.hostname.includes('firebaseapp.com'))
+            ? 'https://macyayini.onrender.com'
+            : '';
 
         let streamableMatches = [];
         let searchQuery = '';
